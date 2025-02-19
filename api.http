@@ -1,11 +1,36 @@
+@referrerSubscriptionId = 3cee638e-00e3-4bcf-9379-148ac62508ec
+
+###
+# @name subscription
 POST http://localhost:3333/subscriptions
 Content-Type: application/json 
 
 {
-    "name": "Paulo Benatto",
-    "email": "paulobenatto02@gmail.com"
+    "name": "Mariana1",
+    "email": "mariana1@gmail.com",
+    "referrer" : "{{ referrerSubscriptionId }}"
 }
+
+###
+
+@subscriptionId = {{ subscription.response.body.subscriberId }}
 
 ### 
 
-GET http://localhost:3333/invites/diego123
+GET http://localhost:3333/invites/{{ subscriptionId }}
+
+### 
+
+GET http://localhost:3333/subscribers/{{ subscriptionId }}/ranking/clicks
+
+### 
+
+GET http://localhost:3333/subscribers/{{referrerSubscriptionId }}/ranking/count
+
+###
+
+GET http://localhost:3333/subscribers/{{referrerSubscriptionId }}/ranking/position
+
+###
+
+GET http://localhost:3333/ranking
