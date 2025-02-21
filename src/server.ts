@@ -10,16 +10,24 @@ import {
 } from 'fastify-type-provider-zod'
 import { env } from './env'
 import { accessInviteLinkRoute } from './routes/access-invite-link-route'
+import { getRankingRoute } from './routes/get-ranking-route'
 import { getSubscriberInviteClicksRoute } from './routes/get-subscriber-invite-clicks-route'
 import { getSubscriberInvitesCountRoute } from './routes/get-subscriber-invites-count-route'
 import { getSubscriberRankingPositionRoute } from './routes/get-subscriber-ranking-position-route'
 import { subscribeToEventRoute } from './routes/subscribe-to-event-route'
-import { getRankingRoute } from './routes/get-ranking-route'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
 app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
+
+app.setErrorHandler((error, request, reply) => {
+  console.error(error)
+  reply.send({
+    statusCode: 500,
+    message: 'Internal Server Error',
+  })
+})
 
 app.register(fastifyCors, {
   origin: '*',
